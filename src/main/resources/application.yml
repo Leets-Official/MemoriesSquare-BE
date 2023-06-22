@@ -32,6 +32,9 @@ jwt:
   access_secret: ${JWT_ACCESS_SECRET}
   refresh_secret: ${JWT_REFRESH_SECRET}
 
+social-login:
+  redirect: ${SOCIAL_LOGIN_REDIRECT}
+
 cors:
   origin:
     development: ${CORS_ORIGIN_DEVELOPMENT}

@@ -1,26 +1,26 @@
 package leets.memoriessquare.global.oauth;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import leets.memoriessquare.global.jwt.AuthRole;
 import leets.memoriessquare.global.jwt.JwtProvider;
-import leets.memoriessquare.global.jwt.dto.JwtResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 @RequiredArgsConstructor
 @Component
-public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
+public class OAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+    @Value("${social-login.redirect}")
+    private String redirectUrl;
     private final JwtProvider jwtProvider;
 
     @Override
@@ -40,10 +40,6 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
         cookie.setSecure(true);
         response.addCookie(cookie);
 
-        Map<String, Object> result = new HashMap<>();
-        result.put("result", new JwtResponse(accessToken, refreshToken));
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        response.getWriter().write(objectMapper.writeValueAsString(result));
+        getRedirectStrategy().sendRedirect(request, response, redirectUrl + "?token=" + accessToken);
     }
 }
