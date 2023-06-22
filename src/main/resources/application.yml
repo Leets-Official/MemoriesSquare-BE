@@ -28,6 +28,10 @@ spring:
               - email
               - public_profile
 
+springdoc:
+  swagger-ui:
+    persist-authorization: true
+
 jwt:
   access_secret: ${JWT_ACCESS_SECRET}
   refresh_secret: ${JWT_REFRESH_SECRET}
