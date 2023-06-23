@@ -38,6 +38,7 @@ public class OAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         Cookie cookie = new Cookie("refreshToken", refreshToken);
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
+        cookie.setMaxAge(60 * 60 * 24 * 30);
         response.addCookie(cookie);
 
         getRedirectStrategy().sendRedirect(request, response, redirectUrl + "?token=" + accessToken);
