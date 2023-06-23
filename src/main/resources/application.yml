@@ -16,10 +16,28 @@ spring:
         show_sql: true
     hibernate:
       ddl-auto: update
+  security:
+    oauth2:
+      client:
+        registration:
+          facebook:
+            client-id: ${FACEBOOK_CLIENT_ID}
+            client-secret: ${FACEBOOK_SECRET}
+            redirect-uri: "{baseUrl}/oauth/callback/{registrationId}"
+            scope:
+              - email
+              - public_profile
+
+springdoc:
+  swagger-ui:
+    persist-authorization: true
 
 jwt:
   access_secret: ${JWT_ACCESS_SECRET}
   refresh_secret: ${JWT_REFRESH_SECRET}
+
+social-login:
+  redirect: ${SOCIAL_LOGIN_REDIRECT}
 
 cors:
   origin:
