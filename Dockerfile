@@ -12,4 +12,4 @@ COPY --from=builder /workspace/build/libs/memoriessquare-be-0.0.1-SNAPSHOT.jar .
 ENV TZ Asia/Seoul
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "app.jar"]
