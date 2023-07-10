@@ -34,6 +34,10 @@ dependencies {
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // AWS SDK for Java
+    implementation 'software.amazon.awssdk:s3:2.15.49'
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.172'
 }
 
 tasks.named('test') {
