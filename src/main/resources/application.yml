@@ -29,6 +29,13 @@ spring:
             scope:
               - email
               - public_profile
+          google:
+            client-secret: ${GOOGLE_CLIENT_ID}
+            client-id: ${GOOGLE_SECRET}
+            scope:
+              - email
+              - profile
+
 
 springdoc:
   swagger-ui:
