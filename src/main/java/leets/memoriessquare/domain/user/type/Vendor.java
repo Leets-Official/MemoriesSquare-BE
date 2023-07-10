@@ -6,7 +6,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum Vendor {
-    FACEBOOK("FACEBOOK");
+    FACEBOOK("FACEBOOK"),
+    GOOGLE("GOOGLE");
 
     private final String vendor;
 }
