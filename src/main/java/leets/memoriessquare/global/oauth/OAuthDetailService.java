@@ -6,6 +6,7 @@ import leets.memoriessquare.domain.user.type.Vendor;
 import leets.memoriessquare.global.error.ErrorCode;
 import leets.memoriessquare.global.error.exception.ServiceException;
 import leets.memoriessquare.global.oauth.attribute.FacebookOAuthAttribute;
+import leets.memoriessquare.global.oauth.attribute.GoogleOAuthAttribute;
 import leets.memoriessquare.global.oauth.attribute.OAuthAttribute;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -29,6 +30,9 @@ public class OAuthDetailService extends DefaultOAuth2UserService {
 
         if (vendor.equalsIgnoreCase(Vendor.FACEBOOK.getVendor())) {
             attribute = Optional.of(new FacebookOAuthAttribute(oAuth2User.getAttributes()));
+        }
+        if (vendor.equalsIgnoreCase(Vendor.GOOGLE.getVendor())) {
+            attribute = Optional.of(new GoogleOAuthAttribute(oAuth2User.getAttributes()));
         }
 
         OAuthAttribute attr = attribute.orElseThrow(() -> new ServiceException(ErrorCode.INTERNAL_SERVER_ERROR));

@@ -2,6 +2,8 @@ server:
   port: ${PORT:8080}
 
 spring:
+  profiles:
+    default: local
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     username: ${DATABASE_USERNAME}
@@ -27,6 +29,14 @@ spring:
             scope:
               - email
               - public_profile
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_SECRET}
+            redirect-uri: "{baseUrl}/oauth/callback/{registrationId}"
+            scope:
+              - email
+              - profile
+
 
 springdoc:
   swagger-ui:

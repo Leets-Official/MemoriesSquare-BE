@@ -1,0 +1,30 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        show_sql: true
+    hibernate:
+      ddl-auto: update
+  security:
+    oauth2:
+      client:
+        registration:
+          facebook:
+            client-id: ${FACEBOOK_CLIENT_ID}
+            client-secret: ${FACEBOOK_SECRET}
+            redirect-uri: "https://{baseHost}{basePort}/oauth/callback/{registrationId}"
+            scope:
+              - email
+              - public_profile
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_SECRET}
+            redirect-uri: "https://{baseHost}{basePort}/oauth/callback/{registrationId}}"
+            scope:
+              - email
+              - profile

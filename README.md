@@ -10,7 +10,8 @@ chmod +x gradlew
 
 ./gradlew clean build
 
-java -jar ./build/libs/memoriessquare-be-0.0.1-SNAPSHOT.jar
+# 필요할 경우 실행 환경을 변경합니다. (local, dev, prod)
+java -Dspring.profiles.active=prod -jar ./build/libs/memoriessquare-be-0.0.1-SNAPSHOT.jar
 ```
 
 ## Environment
@@ -37,6 +38,8 @@ SOCIAL_LOGIN_REDIRECT=
 # 소셜로그인 API 정보
 FACEBOOK_CLIENT_ID=
 FACEBOOK_SECRET=
+GOOGLE_CLIENT_ID=
+GOOGLE_SECRET=
 ```
 
 ## Commit Convention
