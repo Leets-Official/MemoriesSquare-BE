@@ -30,8 +30,9 @@ spring:
               - email
               - public_profile
           google:
-            client-secret: ${GOOGLE_CLIENT_ID}
-            client-id: ${GOOGLE_SECRET}
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_SECRET}
+            redirect-uri: "{baseUrl}/oauth/callback/{registrationId}"
             scope:
               - email
               - profile
