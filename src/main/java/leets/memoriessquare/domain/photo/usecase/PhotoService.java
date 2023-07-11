@@ -20,7 +20,7 @@ public class PhotoService {
     private final UserRepository userRepository;
 
     @Transactional
-    public PhotoDTO uploadPhoto(MultipartFile file, String userId) throws Exception {
+    public PhotoDTO uploadPhoto(MultipartFile file, UUID userId) throws Exception {
         UUID userUuid = UUID.fromString(userId); // String을 UUID로 변환
 
         User user = userRepository.findById(userUuid)
