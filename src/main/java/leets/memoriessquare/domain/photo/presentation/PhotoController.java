@@ -20,7 +20,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/photos")
+@RequestMapping("/photo")
 public class PhotoController {
     private final GetPhoto getPhoto;
     private final UploadPhoto uploadPhoto;
