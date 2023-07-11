@@ -29,7 +29,7 @@ public class PhotoController {
     public ResponseEntity<PhotoDTO> getPhoto(@PathVariable UUID photoId) {
         PhotoGet photo = getPhoto.execute(photoId);
         PhotoDTO photoDTO = PhotoDTO.from(photo);
-        return ResponseEntity.ok(photoDTO);
+        return photoDTO;
     }
 
     @PostMapping("/upload")
