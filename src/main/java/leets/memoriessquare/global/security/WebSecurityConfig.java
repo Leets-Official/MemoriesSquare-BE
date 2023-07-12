@@ -50,7 +50,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
 
                 .requestMatchers("/user/**").hasAuthority(AuthRole.ROLE_USER.getRole())
-                .requestMatchers("/photo/upload/file").permitAll()
+                .requestMatchers("/photo/upload/**").hasAuthority(AuthRole.ROLE_USER.getRole())
 
                 .anyRequest().authenticated()
                 .and()
