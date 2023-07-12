@@ -9,7 +9,5 @@ import jakarta.validation.constraints.NotBlank;
 @Getter
 @Setter
 public class UploadPhotoRequest {
-    @NotBlank(message = "User ID is required")
-    private String userId;
     private MultipartFile file;
 }
