@@ -7,19 +7,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import leets.memoriessquare.domain.photo.presentation.dto.PhotoDTO;
 import leets.memoriessquare.domain.photo.presentation.dto.UploadPhotoResponse;
-import leets.memoriessquare.domain.photo.presentation.dto.UploadPhotoRequest;
 import leets.memoriessquare.domain.photo.usecase.UploadPhoto;
 import leets.memoriessquare.global.error.ErrorResponse;
 import lombok.RequiredArgsConstructor;
+import leets.memoriessquare.global.oauth.OAuthDetails;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
-
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/photo")
@@ -38,10 +35,9 @@ public class PhotoController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/upload")
     public UploadPhotoResponse uploadPhoto(
-            @Valid UploadPhotoRequest request,
             @RequestParam("file") MultipartFile file,
-            @AuthenticationPrincipal(expression = "userId") UUID userId) throws Exception {
-        PhotoDTO photoDTO = uploadPhoto.execute(file, userId);
+            @AuthenticationPrincipal OAuthDetails auth) throws Exception {
+        PhotoDTO photoDTO = uploadPhoto.execute(file, auth.getId());
         return new UploadPhotoResponse(photoDTO.getId());
     }
 }
