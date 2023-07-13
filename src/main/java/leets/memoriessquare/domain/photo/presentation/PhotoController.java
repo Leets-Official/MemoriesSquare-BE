@@ -9,14 +9,13 @@ import leets.memoriessquare.domain.photo.presentation.dto.PhotoDTO;
 import leets.memoriessquare.domain.photo.presentation.dto.UploadPhotoResponse;
 import leets.memoriessquare.domain.photo.usecase.UploadPhoto;
 import leets.memoriessquare.global.error.ErrorResponse;
-import lombok.RequiredArgsConstructor;
 import leets.memoriessquare.global.oauth.OAuthDetails;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/photo")
@@ -33,7 +32,7 @@ public class PhotoController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/upload")
+    @PostMapping(value = "/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public UploadPhotoResponse uploadPhoto(
             @RequestParam("file") MultipartFile file,
             @AuthenticationPrincipal OAuthDetails auth) throws Exception {
