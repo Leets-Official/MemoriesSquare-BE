@@ -53,3 +53,8 @@ cors:
   origin:
     development: ${CORS_ORIGIN_DEVELOPMENT}
     production: ${CORS_ORIGIN_PRODUCTION}
+
+aws:
+  accessKey: ${AWS_ACCESS_KEY}
+  secretKey: ${AWS_SECRET_KEY}
+  region : us-wes-2
