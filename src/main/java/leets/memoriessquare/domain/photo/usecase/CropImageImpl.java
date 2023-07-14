@@ -1,4 +1,4 @@
-package leets.memoriessquare.domain.image.usecase;
+package leets.memoriessquare.domain.photo.usecase;
 
 import lombok.RequiredArgsConstructor;
 import org.imgscalr.Scalr;
