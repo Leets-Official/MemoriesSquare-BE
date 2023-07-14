@@ -9,4 +9,5 @@ public class PhotoDTO {
     private final String id;
     private final String userId;
     private final String imageUrl;
+    private final boolean isCrop;
 }

@@ -36,6 +36,6 @@ public class UploadPhotoImpl implements UploadPhoto {
 
         photoRepository.save(photo);
 
-        return new PhotoDTO(photo.getId().toString(), user.getId().toString(), photo.getImageUrl());
+        return new PhotoDTO(photo.getId().toString(), user.getId().toString(), photo.getImageUrl(), false);
     }
 }
