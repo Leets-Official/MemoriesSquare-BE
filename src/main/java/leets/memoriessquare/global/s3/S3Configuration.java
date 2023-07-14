@@ -1,4 +1,4 @@
-package leets.memoriessquare.domain.photo.usecase;
+package leets.memoriessquare.global.s3;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
