@@ -1,12 +1,11 @@
 package leets.memoriessquare.domain.photo.domain;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import leets.memoriessquare.domain.shared.entity.BaseTimeEntity;
 import leets.memoriessquare.domain.user.domain.User;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import jakarta.persistence.*;
 import java.util.UUID;
 
 @Getter
@@ -28,4 +27,8 @@ public class Photo extends BaseTimeEntity {
 
     @Column(nullable = false)
     private String imageUrl;
+
+    @Builder.Default
+    @Column(nullable = false, columnDefinition = "tinyint(1) default 0")
+    private boolean isCrop = false;
 }
