@@ -13,7 +13,7 @@ import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
-public class CropImageImpl implements CropImage {
+public class CropPhotoImpl implements CropPhoto {
     private static final int IMAGE_HEIGHT = 500;
 
     @Override
