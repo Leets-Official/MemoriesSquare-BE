@@ -1,8 +1,11 @@
 package leets.memoriessquare.domain.photo.usecase;
 
-import java.io.File;
+import leets.memoriessquare.domain.photo.presentation.dto.PhotoDTO;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
+import java.util.UUID;
 
 public interface CropPhoto {
-    void execute(File originalImage, String resultFilePath) throws IOException;
+    PhotoDTO execute(MultipartFile originalImage, UUID userId) throws IOException;
 }
