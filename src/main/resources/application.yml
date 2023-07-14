@@ -57,4 +57,4 @@ cors:
 aws:
   accessKey: ${AWS_ACCESS_KEY}
   secretKey: ${AWS_SECRET_KEY}
-  region : us-wes-2
+  region: ap-northeast-2
