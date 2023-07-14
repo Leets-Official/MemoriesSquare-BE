@@ -9,6 +9,8 @@ import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -39,6 +41,32 @@ public class S3Service {
                     .build();
 
             s3Client.putObject(request, RequestBody.fromInputStream(inputStream, file.getSize()));
+
+            return generateImageUrl(fileName);
+        } catch (SdkClientException e) {
+            throw new IOException("Failed to upload image to S3", e);
+        }
+    }
+
+    public String uploadImage(ByteArrayOutputStream os, String fileName, String contentType) throws IOException {
+        byte[] buffer = os.toByteArray();
+
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentType(contentType);
+        metadata.setContentLength(buffer.length);
+
+        Map<String, String> metadataMap = new HashMap<>();
+        metadataMap.put("Content-Type", metadata.getContentType());
+        metadataMap.put("Content-Length", String.valueOf(metadata.getContentLength()));
+
+        try (InputStream inputStream = new ByteArrayInputStream(buffer)) {
+            PutObjectRequest request = PutObjectRequest.builder()
+                    .bucket(S3_BUCKET_NAME)
+                    .key(fileName)
+                    .metadata(metadataMap)
+                    .build();
+
+            s3Client.putObject(request, RequestBody.fromInputStream(inputStream, buffer.length));
 
             return generateImageUrl(fileName);
         } catch (SdkClientException e) {
