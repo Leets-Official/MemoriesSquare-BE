@@ -48,7 +48,7 @@ public class S3Service {
         }
     }
 
-    public String uploadImage(ByteArrayOutputStream os, String fileName, String contentType) throws IOException {
+    public String uploadImage(ByteArrayOutputStream os, String fileName, String contentType, String extension) throws IOException {
         byte[] buffer = os.toByteArray();
 
         ObjectMetadata metadata = new ObjectMetadata();
@@ -62,13 +62,13 @@ public class S3Service {
         try (InputStream inputStream = new ByteArrayInputStream(buffer)) {
             PutObjectRequest request = PutObjectRequest.builder()
                     .bucket(S3_BUCKET_NAME)
-                    .key(fileName)
+                    .key(fileName + "." + extension)
                     .metadata(metadataMap)
                     .build();
 
             s3Client.putObject(request, RequestBody.fromInputStream(inputStream, buffer.length));
 
-            return generateImageUrl(fileName);
+            return generateImageUrl(fileName + "." + extension);
         } catch (SdkClientException e) {
             throw new IOException("Failed to upload image to S3", e);
         }
