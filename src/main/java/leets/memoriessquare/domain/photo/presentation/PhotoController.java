@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import leets.memoriessquare.domain.photo.presentation.dto.PhotoDTO;
 import leets.memoriessquare.domain.photo.presentation.dto.UploadPhotoResponse;
+import leets.memoriessquare.domain.photo.usecase.CropPhoto;
 import leets.memoriessquare.domain.photo.usecase.UploadPhoto;
 import leets.memoriessquare.global.error.ErrorResponse;
 import leets.memoriessquare.global.oauth.OAuthDetails;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class PhotoController {
     private final UploadPhoto uploadPhoto;
+    private final CropPhoto cropPhoto;
 
     @Operation(summary = "사진 업로드", description = "새로운 사진을 업로드합니다.")
     @ApiResponses({
@@ -33,10 +35,9 @@ public class PhotoController {
     })
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public UploadPhotoResponse uploadPhoto(
-            @RequestParam("file") MultipartFile file,
-            @AuthenticationPrincipal OAuthDetails auth) throws Exception {
+    public UploadPhotoResponse uploadPhoto(@RequestParam("file") MultipartFile file, @AuthenticationPrincipal OAuthDetails auth) throws Exception {
         PhotoDTO photoDTO = uploadPhoto.execute(file, auth.getId());
-        return new UploadPhotoResponse(photoDTO.getId());
+        PhotoDTO croppedPhotoDTO = cropPhoto.execute(file, auth.getId());
+        return new UploadPhotoResponse(photoDTO, croppedPhotoDTO);
     }
 }
