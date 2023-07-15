@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import leets.memoriessquare.domain.photo.exception.MimeTypeIsNotImage;
+import leets.memoriessquare.domain.photo.exception.MimeTypeIsNotImageException;
 import leets.memoriessquare.domain.photo.presentation.dto.PhotoDTO;
 import leets.memoriessquare.domain.photo.presentation.dto.UploadPhotoResponse;
 import leets.memoriessquare.domain.photo.usecase.CropPhoto;
@@ -39,7 +39,7 @@ public class PhotoController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public UploadPhotoResponse uploadPhoto(@RequestParam("file") MultipartFile file, @AuthenticationPrincipal OAuthDetails auth) throws Exception {
-        if (!Objects.requireNonNull(file.getContentType(), "").contains("image/")) throw new MimeTypeIsNotImage();
+        if (!Objects.requireNonNull(file.getContentType(), "").contains("image/")) throw new MimeTypeIsNotImageException();
 
         PhotoDTO photoDTO = uploadPhoto.execute(file, auth.getId());
         PhotoDTO croppedPhotoDTO = cropPhoto.execute(file, auth.getId());
