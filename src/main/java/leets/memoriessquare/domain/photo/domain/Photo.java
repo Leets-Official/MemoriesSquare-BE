@@ -31,4 +31,11 @@ public class Photo extends BaseTimeEntity {
     @Builder.Default
     @Column(nullable = false, columnDefinition = "tinyint(1) default 0")
     private boolean isCrop = false;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "original_photo_id")
+    private Photo originalPhoto;
+
+    @OneToOne(mappedBy = "originalPhoto")
+    private Photo cropPhoto;
 }
