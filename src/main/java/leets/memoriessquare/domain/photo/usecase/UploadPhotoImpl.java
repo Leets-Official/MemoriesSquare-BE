@@ -5,7 +5,7 @@ import leets.memoriessquare.domain.photo.repository.PhotoRepository;
 import leets.memoriessquare.domain.user.domain.User;
 import leets.memoriessquare.domain.user.exception.UserNotFoundException;
 import leets.memoriessquare.domain.user.repository.UserRepository;
-import leets.memoriessquare.global.error.ErrorCode;
+import leets.memoriessquare.global.s3.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +36,6 @@ public class UploadPhotoImpl implements UploadPhoto {
 
         photoRepository.save(photo);
 
-        return new PhotoDTO(photo.getId().toString(), user.getId().toString(), photo.getImageUrl());
+        return new PhotoDTO(photo.getId(), user.getId().toString(), photo.getImageUrl(), false);
     }
 }

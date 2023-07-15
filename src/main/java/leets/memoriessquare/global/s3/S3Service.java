@@ -1,17 +1,16 @@
-package leets.memoriessquare.domain.photo.usecase;
+package leets.memoriessquare.global.s3;
 
 import com.amazonaws.SdkClientException;
-import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -22,7 +21,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class S3Service {
     private final S3Client s3Client;
-    private final String bucketName = "memoriessquare";
+    private static final String S3_BUCKET_NAME = "memoriessquare";
 
     public String uploadImage(MultipartFile file) throws IOException {
         String fileName = generateFileName(file);
@@ -36,14 +35,40 @@ public class S3Service {
 
         try (InputStream inputStream = file.getInputStream()) {
             PutObjectRequest request = PutObjectRequest.builder()
-                    .bucket(bucketName)
+                    .bucket(S3_BUCKET_NAME)
                     .key(fileName)
                     .metadata(metadataMap)
                     .build();
 
-            PutObjectResponse response = s3Client.putObject(request, RequestBody.fromInputStream(inputStream, file.getSize()));
+            s3Client.putObject(request, RequestBody.fromInputStream(inputStream, file.getSize()));
 
             return generateImageUrl(fileName);
+        } catch (SdkClientException e) {
+            throw new IOException("Failed to upload image to S3", e);
+        }
+    }
+
+    public String uploadImage(ByteArrayOutputStream os, String fileName, String contentType, String extension) throws IOException {
+        byte[] buffer = os.toByteArray();
+
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentType(contentType);
+        metadata.setContentLength(buffer.length);
+
+        Map<String, String> metadataMap = new HashMap<>();
+        metadataMap.put("Content-Type", metadata.getContentType());
+        metadataMap.put("Content-Length", String.valueOf(metadata.getContentLength()));
+
+        try (InputStream inputStream = new ByteArrayInputStream(buffer)) {
+            PutObjectRequest request = PutObjectRequest.builder()
+                    .bucket(S3_BUCKET_NAME)
+                    .key(fileName + "." + extension)
+                    .metadata(metadataMap)
+                    .build();
+
+            s3Client.putObject(request, RequestBody.fromInputStream(inputStream, buffer.length));
+
+            return generateImageUrl(fileName + "." + extension);
         } catch (SdkClientException e) {
             throw new IOException("Failed to upload image to S3", e);
         }
@@ -67,7 +92,6 @@ public class S3Service {
     }
 
     private String generateImageUrl(String fileName) {
-        return s3Client.utilities().getUrl(builder -> builder.bucket(bucketName).key(fileName)).toExternalForm();
+        return s3Client.utilities().getUrl(builder -> builder.bucket(S3_BUCKET_NAME).key(fileName)).toExternalForm();
     }
-
 }

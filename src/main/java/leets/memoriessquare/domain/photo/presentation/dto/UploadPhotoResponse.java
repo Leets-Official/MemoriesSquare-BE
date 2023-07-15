@@ -6,5 +6,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class UploadPhotoResponse {
-    private String photoId;
+    private PhotoDTO photo;
+    private PhotoDTO croppedPhoto;
 }
