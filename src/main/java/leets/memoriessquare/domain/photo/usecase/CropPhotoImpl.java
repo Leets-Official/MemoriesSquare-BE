@@ -1,6 +1,7 @@
 package leets.memoriessquare.domain.photo.usecase;
 
 import leets.memoriessquare.domain.photo.domain.Photo;
+import leets.memoriessquare.domain.photo.exception.PhotoNotFoundException;
 import leets.memoriessquare.domain.photo.presentation.dto.PhotoDTO;
 import leets.memoriessquare.domain.photo.repository.PhotoRepository;
 import leets.memoriessquare.domain.user.domain.User;
@@ -29,7 +30,7 @@ public class CropPhotoImpl implements CropPhoto {
     private static final int IMAGE_HEIGHT = 500;
 
     @Override
-    public PhotoDTO execute(MultipartFile originalImage, UUID userId) throws IOException {
+    public PhotoDTO execute(MultipartFile originalImage, UUID userId, UUID originalPhotoId) throws IOException {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
         BufferedImage readImage = ImageIO.read(originalImage.getInputStream());
@@ -48,13 +49,14 @@ public class CropPhotoImpl implements CropPhoto {
             String savedFileName = UUID.randomUUID() + "-cropped";
             String url = s3Service.uploadImage(os, savedFileName, originalImage.getContentType(), extension);
 
+            Photo originalPhoto = photoRepository.findById(originalPhotoId).orElseThrow(PhotoNotFoundException::new);
             Photo photo = Photo.builder()
                     .user(user)
                     .imageUrl(url)
+                    .originalPhoto(originalPhoto)
                     .build();
             photoRepository.save(photo);
 
-            return new PhotoDTO(photo.getId().toString(), user.getId().toString(), photo.getImageUrl(), true);
             return new PhotoDTO(photo.getId(), user.getId().toString(), photo.getImageUrl(), true);
         }
     }

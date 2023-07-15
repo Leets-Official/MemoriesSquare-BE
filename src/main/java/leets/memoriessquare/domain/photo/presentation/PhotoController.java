@@ -42,7 +42,7 @@ public class PhotoController {
         if (!Objects.requireNonNull(file.getContentType(), "").contains("image/")) throw new MimeTypeIsNotImageException();
 
         PhotoDTO photoDTO = uploadPhoto.execute(file, auth.getId());
-        PhotoDTO croppedPhotoDTO = cropPhoto.execute(file, auth.getId());
+        PhotoDTO croppedPhotoDTO = cropPhoto.execute(file, auth.getId(), photoDTO.getId());
         return new UploadPhotoResponse(photoDTO, croppedPhotoDTO);
     }
 }
