@@ -6,6 +6,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-public interface GetPhotoByDate {
+public interface GetPhotosByDate {
     List<PhotoWithDateDTO> execute(UUID userId, LocalDate date);
 }

@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
-public class GetPhotoByDateImpl implements GetPhotoByDate {
+public class GetPhotoByDateImpl implements GetPhotosByDate {
     private final PhotoRepository photoRepository;
     private final PhotoMapper photoMapper;
 

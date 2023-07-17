@@ -10,12 +10,11 @@ import leets.memoriessquare.domain.photo.presentation.dto.PhotoDTO;
 import leets.memoriessquare.domain.photo.presentation.dto.PhotoWithDateDTO;
 import leets.memoriessquare.domain.photo.presentation.dto.UploadPhotoResponse;
 import leets.memoriessquare.domain.photo.usecase.CropPhoto;
-import leets.memoriessquare.domain.photo.usecase.GetPhotoByDate;
+import leets.memoriessquare.domain.photo.usecase.GetPhotosByDate;
 import leets.memoriessquare.domain.photo.usecase.UploadPhoto;
 import leets.memoriessquare.global.error.ErrorResponse;
 import leets.memoriessquare.global.oauth.OAuthDetails;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -33,7 +32,7 @@ import java.util.Objects;
 public class PhotoController {
     private final UploadPhoto uploadPhoto;
     private final CropPhoto cropPhoto;
-    private final GetPhotoByDate getPhotoByDate;
+    private final GetPhotosByDate getPhotoByDate;
 
     @Operation(summary = "사진 업로드", description = "새로운 사진을 업로드합니다.")
     @ApiResponses({
