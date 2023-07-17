@@ -13,6 +13,7 @@ public class PhotoWithDateDTO {
     private final UUID userId;
     private final String imageUrl;
     private final boolean isCrop;
+    private final UUID originalPhotoId;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
 }

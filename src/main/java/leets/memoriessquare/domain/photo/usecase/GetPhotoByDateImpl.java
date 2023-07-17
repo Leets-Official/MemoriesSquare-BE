@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -17,9 +18,9 @@ public class GetPhotoByDateImpl implements GetPhotoByDate {
 
     @Override
     public List<PhotoWithDateDTO> execute(UUID userId, LocalDate date) {
-        List<Photo> photos = photoRepository.findAllByUser_IdAndCreatedAtOrderByCreatedAtDesc(userId, date);
+        List<Photo> photos = photoRepository.findAllByUser_IdAndCreatedAtBetweenOrderByCreatedAtDesc(userId, date.atTime(0, 0), date.atTime(23, 59));
         return photos.stream().map(i ->
-                new PhotoWithDateDTO(i.getId(), i.getUser().getId(), i.getImageUrl(), i.isCrop(), i.getCreatedAt(), i.getUpdatedAt())
+                new PhotoWithDateDTO(i.getId(), i.getUser().getId(), i.getImageUrl(), i.isCrop(), Objects.requireNonNullElse(i.getOriginalPhoto().getId(), null), i.getCreatedAt(), i.getUpdatedAt())
         ).toList();
     }
 }
