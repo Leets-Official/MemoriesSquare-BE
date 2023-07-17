@@ -54,6 +54,7 @@ public class CropPhotoImpl implements CropPhoto {
                     .user(user)
                     .imageUrl(url)
                     .originalPhoto(originalPhoto)
+                    .isCrop(true)
                     .build();
             photoRepository.save(photo);
 
