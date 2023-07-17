@@ -9,7 +9,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PhotoDTO {
     private final UUID id;
-    private final String userId;
+    private final UUID userId;
     private final String imageUrl;
     private final boolean isCrop;
 }

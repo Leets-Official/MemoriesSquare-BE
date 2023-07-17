@@ -57,7 +57,7 @@ public class CropPhotoImpl implements CropPhoto {
                     .build();
             photoRepository.save(photo);
 
-            return new PhotoDTO(photo.getId(), user.getId().toString(), photo.getImageUrl(), true);
+            return new PhotoDTO(photo.getId(), user.getId(), photo.getImageUrl(), true);
         }
     }
 }
