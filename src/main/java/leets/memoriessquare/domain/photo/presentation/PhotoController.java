@@ -6,9 +6,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import leets.memoriessquare.domain.photo.exception.MimeTypeIsNotImageException;
+import leets.memoriessquare.domain.photo.presentation.dto.CountPhotoResponse;
 import leets.memoriessquare.domain.photo.presentation.dto.PhotoDTO;
 import leets.memoriessquare.domain.photo.presentation.dto.PhotoWithDateDTO;
 import leets.memoriessquare.domain.photo.presentation.dto.UploadPhotoResponse;
+import leets.memoriessquare.domain.photo.usecase.CountPhotoByDate;
 import leets.memoriessquare.domain.photo.usecase.CropPhoto;
 import leets.memoriessquare.domain.photo.usecase.GetPhotosByDate;
 import leets.memoriessquare.domain.photo.usecase.UploadPhoto;
@@ -23,7 +25,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @RestController
@@ -33,6 +37,7 @@ public class PhotoController {
     private final UploadPhoto uploadPhoto;
     private final CropPhoto cropPhoto;
     private final GetPhotosByDate getPhotoByDate;
+    private final CountPhotoByDate countPhotoByDate;
 
     @Operation(summary = "사진 업로드", description = "새로운 사진을 업로드합니다.")
     @ApiResponses({
@@ -63,5 +68,18 @@ public class PhotoController {
     public List<PhotoWithDateDTO> getPhotoByDateApi(@AuthenticationPrincipal OAuthDetails auth, @RequestParam String date) {
         LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
         return getPhotoByDate.execute(auth.getId(), localDate);
+    }
+
+    @Operation(summary = "이번달 날짜별 사진 개수 가져오기", description = "이번달에 올린 날짜별 사진 개수를 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "401", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @GetMapping("/count")
+    public CountPhotoResponse getCountByDate(@AuthenticationPrincipal OAuthDetails auth) {
+        LocalDate now = LocalDate.now();
+        return new CountPhotoResponse(countPhotoByDate.execute(auth.getId(), now.getYear(), now.getMonthValue()));
     }
 }
