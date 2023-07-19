@@ -54,10 +54,11 @@ public class CropPhotoImpl implements CropPhoto {
                     .user(user)
                     .imageUrl(url)
                     .originalPhoto(originalPhoto)
+                    .isCrop(true)
                     .build();
             photoRepository.save(photo);
 
-            return new PhotoDTO(photo.getId(), user.getId().toString(), photo.getImageUrl(), true);
+            return new PhotoDTO(photo.getId(), user.getId(), photo.getImageUrl(), true);
         }
     }
 }
