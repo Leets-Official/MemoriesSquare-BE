@@ -10,10 +10,7 @@ import leets.memoriessquare.domain.photo.presentation.dto.CountPhotoResponse;
 import leets.memoriessquare.domain.photo.presentation.dto.PhotoDTO;
 import leets.memoriessquare.domain.photo.presentation.dto.PhotoWithDateDTO;
 import leets.memoriessquare.domain.photo.presentation.dto.UploadPhotoResponse;
-import leets.memoriessquare.domain.photo.usecase.CountPhotoByDate;
-import leets.memoriessquare.domain.photo.usecase.CropPhoto;
-import leets.memoriessquare.domain.photo.usecase.GetPhotosByDate;
-import leets.memoriessquare.domain.photo.usecase.UploadPhoto;
+import leets.memoriessquare.domain.photo.usecase.*;
 import leets.memoriessquare.global.error.ErrorResponse;
 import leets.memoriessquare.global.oauth.OAuthDetails;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +35,7 @@ public class PhotoController {
     private final CropPhoto cropPhoto;
     private final GetPhotosByDate getPhotoByDate;
     private final CountPhotoByDate countPhotoByDate;
+    private final GetPhotosByUser getPhotosByUser;
 
     @Operation(summary = "사진 업로드", description = "새로운 사진을 업로드합니다.")
     @ApiResponses({
@@ -81,5 +79,17 @@ public class PhotoController {
     public CountPhotoResponse getCountByDate(@AuthenticationPrincipal OAuthDetails auth) {
         LocalDate now = LocalDate.now();
         return new CountPhotoResponse(countPhotoByDate.execute(auth.getId(), now.getYear(), now.getMonthValue()));
+    }
+
+    @Operation(summary = "사용자별 사진 가져오기", description = "특정 사용자의 모든 사진을 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "401", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @GetMapping("/user")
+    public List<PhotoDTO> getPhotosByUserApi(@AuthenticationPrincipal OAuthDetails auth) {
+        return getPhotosByUser.execute(auth.getId());
     }
 }

@@ -15,4 +15,6 @@ public interface PhotoRepository extends JpaRepository<Photo, UUID> {
 
     @Query("SELECT DATE(createdAt) as date, COUNT(*) as count FROM photos WHERE user.id = :userId AND YEAR(createdAt) = :year AND MONTH(createdAt) = :month AND isCrop = false GROUP BY DATE(createdAt) ")
     List<Map<String, Object>> countByYearAndMonth(@Param("userId") UUID userId, @Param("year") int year, @Param("month") int month);
+
+    List<Photo> findAllByUser_Id(UUID userId);
 }
