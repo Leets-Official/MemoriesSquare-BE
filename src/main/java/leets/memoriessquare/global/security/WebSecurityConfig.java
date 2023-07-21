@@ -9,6 +9,7 @@ import leets.memoriessquare.global.oauth.OAuthSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -51,6 +52,7 @@ public class WebSecurityConfig {
 
                 .requestMatchers("/user/**").hasAuthority(AuthRole.ROLE_USER.getRole())
                 .requestMatchers("/photo/**").hasAuthority(AuthRole.ROLE_USER.getRole())
+                .requestMatchers(HttpMethod.POST, "/photo/upload/**").hasAuthority(AuthRole.ROLE_USER.getRole())
 
                 .requestMatchers("/oauth/**").permitAll()
 
