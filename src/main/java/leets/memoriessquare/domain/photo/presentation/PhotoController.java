@@ -88,7 +88,7 @@ public class PhotoController {
             @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    @GetMapping("/user")
+    @GetMapping()
     public List<PhotoDTO> getPhotosByUserApi(@AuthenticationPrincipal OAuthDetails auth) {
         return getPhotosByUser.execute(auth.getId());
     }
