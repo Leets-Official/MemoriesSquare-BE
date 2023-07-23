@@ -1,8 +1,5 @@
 server:
   port: ${PORT:8080}
-  servlet:
-    context-path: /
-  forward-headers-strategy: framework
 
 spring:
   profiles:
