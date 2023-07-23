@@ -1,5 +1,7 @@
 package leets.memoriessquare.global.security;
 
+import leets.memoriessquare.global.error.ErrorCode;
+import leets.memoriessquare.global.error.exception.ServiceException;
 import leets.memoriessquare.global.filter.ExceptionHandleFilter;
 import leets.memoriessquare.global.jwt.AuthRole;
 import leets.memoriessquare.global.jwt.JwtFilter;
@@ -42,8 +44,12 @@ public class WebSecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .exceptionHandling()
-                .authenticationEntryPoint((request, response, authException) -> response.sendError(401))
-                .accessDeniedHandler((request, response, accessDeniedException) -> response.sendError(403))
+                .authenticationEntryPoint((request, response, authException) -> {
+                    throw new ServiceException(ErrorCode.UNAUTHORIZED);
+                })
+                .accessDeniedHandler((request, response, accessDeniedException) -> {
+                    throw new ServiceException(ErrorCode.PERMISSION_DENIED);
+                })
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers(CorsUtils::isCorsRequest).permitAll()
