@@ -22,10 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @RestController
 @RequestMapping("/photo")
@@ -36,6 +33,7 @@ public class PhotoController {
     private final GetPhotosByDate getPhotoByDate;
     private final CountPhotoByDate countPhotoByDate;
     private final GetPhotosByUser getPhotosByUser;
+    private final GetPhotoById getPhotoById;
 
     @Operation(summary = "사진 업로드", description = "새로운 사진을 업로드합니다.")
     @ApiResponses({
@@ -91,5 +89,17 @@ public class PhotoController {
     @GetMapping()
     public List<PhotoDTO> getPhotosByUserApi(@AuthenticationPrincipal OAuthDetails auth) {
         return getPhotosByUser.execute(auth.getId());
+    }
+
+    @Operation(summary = "특정 사진 가져오기", description = "특정 사진의 정보를 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "401", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @GetMapping("/{photoId}")
+    public PhotoDTO getPhotoByUUID(@PathVariable UUID photoId) {
+        return getPhotoById.execute(photoId);
     }
 }
