@@ -19,7 +19,7 @@ public class GetPhotosByUserImpl implements GetPhotosByUser {
     public List<PhotoWithDateDTO> execute(UUID userId) {
         List<Photo> photos = photoRepository.findAllByUser_Id(userId);
         return photos.stream()
-                .map(photo -> new PhotoWithDateDTO(photo.getId(), photo.getUser().getId(), photo.getImageUrl(), photo.isCrop(), photo.getOriginalPhoto().getId(), photo.getCreatedAt(), photo.getUpdatedAt()))
+                .map(photo -> new PhotoWithDateDTO(photo.getId(), photo.getUser().getId(), photo.getImageUrl(), photo.isCrop(), photo.getOriginalPhoto() == null ? null : photo.getOriginalPhoto().getId(), photo.getCreatedAt(), photo.getUpdatedAt()))
                 .collect(Collectors.toList());
     }
 }
