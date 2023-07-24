@@ -74,9 +74,8 @@ public class PhotoController {
             @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping("/count")
-    public CountPhotoResponse getCountByDate(@AuthenticationPrincipal OAuthDetails auth) {
-        LocalDate now = LocalDate.now();
-        return new CountPhotoResponse(countPhotoByDate.execute(auth.getId(), now.getYear(), now.getMonthValue()));
+    public CountPhotoResponse getCountByDate(@AuthenticationPrincipal OAuthDetails auth, @RequestParam String year, @RequestParam String month) {
+        return new CountPhotoResponse(countPhotoByDate.execute(auth.getId(), Integer.parseInt(year), Integer.parseInt(month)));
     }
 
     @Operation(summary = "사용자별 사진 가져오기", description = "특정 사용자의 모든 사진을 조회합니다.")
